@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="org.cloudsky.cordovaplugins.ar" version="0.1.0-alpha1">
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <name>AR Plugin</name>
+    <author>TJ Woon (tj@cloudsky.org)</author>
+    <description>A Cordova plugin for implementing Augmented Reality apps.</description>
+    <license>Apache 2.0</license>
+    <keywords>augmented,reality,augmented reality,arkit,ar</keywords>
+
+    <js-module src="src/www/csAR.js" name="CsAR">
+        <clobbers target="cloudSky.ar" />
+    </js-module>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="CsAR">
+                <param name="ios-package" value="CsAR"/>
+            </feature>
+        </config-file>
+        <framework src="CoreLocation.framework" />
+        <framework src="CoreMotion.framework" />
+        <framework src="QuartzCore.framework" />
+        <header-file src="src/ios/CsAR.h" />
+        <source-file src="src/ios/CsAR.m" />
+        <!-- ARKit files: -->
+        <header-file src="src/ios/ARKit/ARCoordinate.h" />
+        <header-file src="src/ios/ARKit/ARGeoCoordinate.h" />
+        <header-file src="src/ios/ARKit/ARKit.h" />
+        <header-file src="src/ios/ARKit/ARLocationDelegate.h" />
+        <header-file src="src/ios/ARKit/ARViewController.h" />
+        <header-file src="src/ios/ARKit/ARViewProtocol.h" />
+        <header-file src="src/ios/ARKit/AugmentedRealityController.h" />
+        <header-file src="src/ios/ARKit/GEOLocations.h" />
+        <header-file src="src/ios/ARKit/MarkerView.h" />
+        <header-file src="src/ios/ARKit/Radar.h" />
+        <header-file src="src/ios/ARKit/RadarViewPortView.h" />
+        <source-file src="src/ios/ARKit/ARCoordinate.m" />
+        <source-file src="src/ios/ARKit/ARGeoCoordinate.m" />
+        <source-file src="src/ios/ARKit/ARKit.m" />
+        <source-file src="src/ios/ARKit/ARViewController.m" />
+        <source-file src="src/ios/ARKit/AugmentedRealityController.m" />
+        <source-file src="src/ios/ARKit/GEOLocations.m" />
+        <source-file src="src/ios/ARKit/MarkerView.m" />
+        <source-file src="src/ios/ARKit/Radar.m" />
+        <source-file src="src/ios/ARKit/RadarViewPortView.m" />
+        <resource-file src="src/ios/ARKit/Images/bgCallout.png" />
+        <resource-file src="src/ios/ARKit/Images/bgCallout@2x.png" />
+        <resource-file src="src/ios/ARKit/Images/bgCalloutDisclosure.png" />
+        <resource-file src="src/ios/ARKit/Images/bgCalloutDisclosure@2x.png" />
+    </platform><!-- ios -->
+
+</plugin>
