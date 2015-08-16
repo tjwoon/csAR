@@ -3,7 +3,11 @@
 @interface CsAR ()
 
 @property CDVInvokedUrlCommand *callback;
+@property CLLocationManager *locationManager;
+
+// Config/state per run...
 @property NSMutableArray *geoLocations;
+@property double radarRange;
 
 @end
 
@@ -11,7 +15,9 @@
 @implementation CsAR
 
 @synthesize callback;
+@synthesize locationManager;
 @synthesize geoLocations;
+@synthesize radarRange;
 
 #pragma mark -
 #pragma mark Helpers
@@ -38,6 +44,47 @@
     }
 
     self.geoLocations = ingested;
+}
+
+- (void)requestLocationPermissions
+{
+    if(self.locationManager == nil) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        [self.locationManager setDelegate:self];
+    }
+
+    [self.locationManager requestWhenInUseAuthorization];
+}
+
+- (void)startARWithGeoLocations
+{
+    ARViewController *controller = [[ARViewController alloc] initWithDelegate:self];
+    // TMP FIXME [controller setShowsRadar:YES];
+    // TMP FIXME [controller setRadarBackgroundColour:[UIColor blackColor]];
+    // TMP FIXME [controller setRadarViewportColour:[UIColor darkGrayColor]];
+    // TMP FIXME [controller setRadarPointColour:[UIColor whiteColor]];
+    [controller setRadarRange:self.radarRange];
+    [controller setOnlyShowItemsWithinRadarRange:YES];
+    [controller setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal]; // ? TODO CHECK FIXME
+    [self.viewController presentViewController:controller animated:YES completion:nil];
+}
+
+
+#pragma mark -
+#pragma mark CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager*)manager
+        didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    switch(status) {
+        case kCLAuthorizationStatusRestricted:
+        case kCLAuthorizationStatusDenied:
+            [self sendErrorString:@"Location permission not granted" withCommand:self.callback];
+        case kCLAuthorizationStatusNotDetermined:
+            return;
+        default:
+            [self startARWithGeoLocations];
+    }
 }
 
 
@@ -76,7 +123,7 @@
         return;
     }
 
-    // Get arguments - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Get arguments and save for use  - - - - - - - - - - - - - - - - - - - - -
     // Validity is checked in JS.
 
     NSDictionary *args = (NSDictionary*) [command argumentAtIndex:0
@@ -84,23 +131,26 @@
                                                   andClass:[NSDictionary class]];
 
     NSNumber *radarRange = [args objectForKey:@"maxDistance"];
+    self.radarRange = [radarRange doubleValue];
+
     NSArray *locs = [args objectForKey:@"geoLocations"];
-
     [self ingestGeoLocations:locs];
-
-    // Save callback and display AR view - - - - - - - - - - - - - - - - - - - -
 
     callback = command;
 
-    ARViewController *controller = [[ARViewController alloc] initWithDelegate:self];
-    //[controller setShowsRadar:YES];
-    //[controller setRadarBackgroundColour:[UIColor blackColor]];
-    //[controller setRadarViewportColour:[UIColor darkGrayColor]];
-    //[controller setRadarPointColour:[UIColor whiteColor]];
-    [controller setRadarRange:[radarRange doubleValue]];
-    [controller setOnlyShowItemsWithinRadarRange:YES];
-    [controller setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal]; // ? TODO CHECK FIXME
-    [self.viewController presentViewController:controller animated:YES completion:nil];
+    // Check for / request Location Services permissions - - - - - - - - - - - -
+
+    switch([CLLocationManager authorizationStatus]) {
+        case kCLAuthorizationStatusRestricted:
+        case kCLAuthorizationStatusDenied:
+            [self sendErrorString:@"Location permission not granted" withCommand:command];
+            return;
+        case kCLAuthorizationStatusNotDetermined:
+            [self requestLocationPermissions];
+            break;
+        default:
+            [self startARWithGeoLocations];
+    }
 }
 
 

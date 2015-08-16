@@ -17,10 +17,14 @@
     </js-module>
 
     <platform name="ios">
+        <preference name="IOS_PERMISSION_DESCRIPTION" />
         <config-file target="config.xml" parent="/*">
             <feature name="CsAR">
                 <param name="ios-package" value="CsAR"/>
             </feature>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+            <string>$IOS_PERMISSION_DESCRIPTION</string>
         </config-file>
         <framework src="CoreLocation.framework" />
         <framework src="CoreMotion.framework" />

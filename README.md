@@ -12,7 +12,10 @@ Installation
 
 ### Using the Cordova CLI
 
-`cordova plugins add org.cloudsky.cordovaplugins.ar`
+```
+cordova plugins add org.cloudsky.cordovaplugins.ar \
+    --variable IOS_PERMISSION_DESCRIPTION="Description when requestion Location Permission from user (on iOS)"
+```
 
 
 Usage
