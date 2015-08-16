@@ -159,12 +159,12 @@
 
 - (void)locationClicked:(ARGeoCoordinate *)coordinate
 {
-    NSLog(@"LOCATION CLICKED NATIVE, %@", coordinate); // TMP
-
     CLLocationCoordinate2D clLoc = coordinate.geoLocation.coordinate;
+    NSNumber *lat = [NSNumber numberWithDouble:clLoc.latitude];
+    NSNumber *lon = [NSNumber numberWithDouble:clLoc.longitude];
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:coordinate.title, @"name"
-                                                                   ,clLoc.latitude,   @"latitude"
-                                                                   ,clLoc.longitude,  @"longitude"
+                                                                   ,lat, @"latitude"
+                                                                   ,lon, @"longitude"
                                                                    ,NULL];
 
     CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
