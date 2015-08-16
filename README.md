@@ -33,5 +33,5 @@ Usage
 Credits
 -------
 
-iOS native AR implementation is based on @chrjs's
-(fork)[https://github.com/chrjs/iPhone-AR-Toolkit] of the iPhone AR Kit.
+iOS native AR implementation is based on [my fork](https://github.com/tjwoon/iPhone-AR-Toolkit) of @chrjs's
+(fork of the) iPhone AR Kit.

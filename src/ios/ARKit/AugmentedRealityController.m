@@ -28,6 +28,8 @@
 #define HEADING_NOT_SET -1.0
 #define DEGREE_TO_UPDATE 1
 
+#define RADAR_TOP_MARGIN 30
+
 
 @interface AugmentedRealityController (Private)
 - (void) updateCenterCoordinate;
@@ -83,12 +85,7 @@
 	
 	CGRect screenRect = [[UIScreen mainScreen] bounds];
     
-    if (cameraOrientation == UIDeviceOrientationLandscapeLeft || cameraOrientation == UIDeviceOrientationLandscapeRight) {
-        screenRect.size.width  = [[UIScreen mainScreen] bounds].size.height;
-        screenRect.size.height = [[UIScreen mainScreen] bounds].size.width;
-    }
-    
-	UIView *camView = [[UIView alloc] initWithFrame:screenRect];
+    UIView *camView = [[UIView alloc] initWithFrame:screenRect];
     UIView *displayV= [[UIView alloc] initWithFrame:screenRect];
     
     [displayV setAutoresizesSubviews:YES];
@@ -215,8 +212,8 @@
         
         int radarSize = 2 * RADIUS + 1;
         int margin = 4;
-        _radarView       = [[Radar alloc] initWithFrame:CGRectMake(displayFrame.size.width - radarSize - margin, margin, radarSize, radarSize)];
-        _radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(displayFrame.size.width - radarSize - margin, margin, radarSize, radarSize)];
+        _radarView       = [[Radar alloc] initWithFrame:CGRectMake(displayFrame.size.width - radarSize - margin, margin + RADAR_TOP_MARGIN, radarSize, radarSize)];
+        _radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(displayFrame.size.width - radarSize - margin, margin + RADAR_TOP_MARGIN, radarSize, radarSize)];
         
         radarNorthLabel = [[UILabel alloc] initWithFrame:CGRectMake(displayFrame.size.width - RADIUS - 11, margin + 3, 10, 10)];
         radarNorthLabel.backgroundColor = [UIColor clearColor];
@@ -311,10 +308,12 @@
         int gradToRotate = newHeading.magneticHeading - 90 - 22.5;
         if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) {
             gradToRotate += 90;
-        }
-        if([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight){
+        } else if([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight){
             gradToRotate -= 90;
+        } else if([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortraitUpsideDown){
+            gradToRotate -= 180;
         }
+
         if (gradToRotate < 0) {
             gradToRotate = 360 + gradToRotate;
         }
@@ -593,18 +592,6 @@
 	
     CGRect newFrame = [[UIScreen mainScreen] bounds];
     
-    switch (orientation) {
-        case UIDeviceOrientationLandscapeLeft:
-        case UIDeviceOrientationLandscapeRight:
-            newFrame.size.width     = [[UIScreen mainScreen] applicationFrame].size.height;
-            newFrame.size.height    = [[UIScreen mainScreen] applicationFrame].size.width;
-            break;
-        case UIDeviceOrientationPortraitUpsideDown:
-            break;
-        default:
-            break;
-    }
-    
     [previewLayer setFrame:[self.cameraView bounds]];
     
     if ([previewLayer.connection isVideoOrientationSupported]) {
@@ -618,9 +605,9 @@
     {
         int radarSize = 2 * RADIUS + 1;
         int margin = 4;
-        [radarNorthLabel setFrame:CGRectMake(newFrame.size.width - RADIUS - 11, margin + 3, 10, 10)];
-        [_radarView setFrame:CGRectMake(newFrame.size.width - radarSize - margin, margin, radarSize, radarSize)];
-        [_radarViewPort setFrame:CGRectMake(newFrame.size.width - radarSize - margin, margin, radarSize, radarSize)];
+        [radarNorthLabel setFrame:CGRectMake(newFrame.size.width - RADIUS - 11, margin + RADAR_TOP_MARGIN + 3, 10, 10)];
+        [_radarView setFrame:CGRectMake(newFrame.size.width - radarSize - margin, margin + RADAR_TOP_MARGIN, radarSize, radarSize)];
+        [_radarViewPort setFrame:CGRectMake(newFrame.size.width - radarSize - margin, margin + RADAR_TOP_MARGIN, radarSize, radarSize)];
     }
 }
 
