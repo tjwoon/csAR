@@ -6,6 +6,7 @@
 @property CLLocationManager *locationManager;
 
 // Config/state per run...
+@property ARViewController *arViewController;
 @property NSMutableArray *geoLocations;
 @property double radarRange;
 
@@ -16,6 +17,7 @@
 
 @synthesize callback;
 @synthesize locationManager;
+@synthesize arViewController;
 @synthesize geoLocations;
 @synthesize radarRange;
 
@@ -58,15 +60,16 @@
 
 - (void)startARWithGeoLocations
 {
-    ARViewController *controller = [[ARViewController alloc] initWithDelegate:self];
-    // TMP FIXME [controller setShowsRadar:YES];
-    // TMP FIXME [controller setRadarBackgroundColour:[UIColor blackColor]];
-    // TMP FIXME [controller setRadarViewportColour:[UIColor darkGrayColor]];
-    // TMP FIXME [controller setRadarPointColour:[UIColor whiteColor]];
-    [controller setRadarRange:self.radarRange];
-    [controller setOnlyShowItemsWithinRadarRange:YES];
-    [controller setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal]; // ? TODO CHECK FIXME
-    [self.viewController presentViewController:controller animated:YES completion:nil];
+    ARViewController *ctrl;
+    self.arViewController = ctrl = [[ARViewController alloc] initWithDelegate:self];
+    // TMP FIXME [ctrl setShowsRadar:YES];
+    // TMP FIXME [ctrl setRadarBackgroundColour:[UIColor blackColor]];
+    // TMP FIXME [ctrl setRadarViewportColour:[UIColor darkGrayColor]];
+    // TMP FIXME [ctrl setRadarPointColour:[UIColor whiteColor]];
+    [ctrl setRadarRange:self.radarRange];
+    [ctrl setOnlyShowItemsWithinRadarRange:YES];
+    [ctrl setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal]; // ? TODO CHECK FIXME
+    [self.viewController presentViewController:ctrl animated:YES completion:nil];
 }
 
 
@@ -167,10 +170,16 @@
                                                                    ,lon, @"longitude"
                                                                    ,NULL];
 
+    NSString *cbId = [self.callback callbackId];
+
+    [self.arViewController dismissViewControllerAnimated:YES completion:nil];
+    self.callback = nil;
+    self.radarRange = 0;
+
     CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                messageAsDictionary:dict];
 
-    [self.commandDelegate sendPluginResult:result callbackId:[self.callback callbackId]];
+    [self.commandDelegate sendPluginResult:result callbackId:cbId];
 }
 
 - (void)didFinishSnapshotGeneration:(UIImage*)image error:(NSError*)error
