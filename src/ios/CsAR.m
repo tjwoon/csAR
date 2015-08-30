@@ -188,4 +188,14 @@
     // is triggered.
 }
 
+- (void)didClickCancel
+{
+    NSString *cbId = [self.callback callbackId];
+    self.callback = nil;
+    self.radarRange = 0;
+
+    CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
+    [self.commandDelegate sendPluginResult:result callbackId:cbId];
+}
+
 @end
