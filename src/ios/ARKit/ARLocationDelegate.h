@@ -16,5 +16,6 @@
 - (NSMutableArray *)geoLocations;
 - (void)locationClicked:(ARGeoCoordinate *)coordinate;
 - (void)didFinishSnapshotGeneration:(UIImage*)image error:(NSError*)error;
+- (void)didClickCancel;
 @end
 
