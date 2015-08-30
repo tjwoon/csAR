@@ -23,11 +23,52 @@ Usage
 
 ### canDoAr
 
-`cloudSky.ar.canDoAr(...)`
+```
+cloudSky.ar.canDoAr(
+    function (canDoAr) {
+        // canDoAr == true if we can do AR on this device, false otherwise.
+    },
+    function () {
+        // Error retrieving AR capability.
+        // Optional.
+    }
+)
+```
 
-### showWithGeolocations
+### showGeolocationsForSelection
 
-`cloudSky.ar.showWithGeolocations(...)`
+```
+cloudSky.ar.showGeolocationsForSelection(
+    {
+        maxDistance: 1000, // OPTIONAL, defaults to 1000
+        geoLocations: [
+            {
+                latitude: 1.2345,
+                longitude: 101.2345678,
+                name: "Location name"
+            },
+            ...
+        ]
+    },
+    function (location) {
+        // location is a new object with the same latitude, longitude, and name
+        // as the location which the user tapped on.
+        // If the AR view was dismissed using the Cancel button,
+        // location === undefined.
+    },
+    function () {
+        // Error launching the AR view.
+        // Optional.
+    }
+)
+```
+
+Where:
+
+- `maxDistance` is the maximum distance from the device's current coordinates to
+  a geolocation before it is no longer displayed.
+- `geoLocations` is an array of locations to display. Any location not matching
+  the given format will be ignored / not displayed.
 
 
 Credits
