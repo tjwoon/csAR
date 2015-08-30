@@ -5,6 +5,6 @@
 @interface CsAR : CDVPlugin <ARLocationDelegate, CLLocationManagerDelegate>
 
 - (void)canDoAR: (CDVInvokedUrlCommand*)command;
-- (void)showWithGeolocations: (CDVInvokedUrlCommand*)command;
+- (void)showGeolocationsForSelection: (CDVInvokedUrlCommand*)command;
 
 @end

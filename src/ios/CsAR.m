@@ -102,7 +102,7 @@
 }
 
 /***
- * - showWithGeolocations
+ * - showGeolocationsForSelection
  * args: [
  *     {
  *         maxDistance: 1234
@@ -117,7 +117,7 @@
  *     }
  * ]
  ***/
-- (void)showWithGeolocations: (CDVInvokedUrlCommand*)command
+- (void)showGeolocationsForSelection: (CDVInvokedUrlCommand*)command
 {
     // Ensure we don't display more than one AR view at a time - - - - - - - - -
 

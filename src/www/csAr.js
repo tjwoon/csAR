@@ -11,9 +11,9 @@ AR.prototype = {
         exec(success, failure, 'CsAR', 'canDoAR', []);
     },
 
-    showWithGeolocations: function (params, success, failure)
+    showGeolocationsForSelection: function (params, success, failure)
     {
-        argscheck.checkArgs('ofF', 'CsAR.showWithGeolocations', arguments);
+        argscheck.checkArgs('ofF', 'CsAR.showGeolocationsForSelection', arguments);
 
         // Perform all input validation here (native does not check) - - - - - -
 
@@ -33,7 +33,7 @@ AR.prototype = {
             }
         });
 
-        exec(success, failure, 'CsAR', 'showWithGeolocations', [{
+        exec(success, failure, 'CsAR', 'showGeolocationsForSelection', [{
             maxDistance: maxDistance,
             geoLocations: locs,
         }]);
