@@ -1,0 +1,26 @@
+{
+    "name": "cordova-plugin-ar",
+    "version": "0.1.0-alpha1",
+    "description": "A Cordova plugin for implementing Augmented Reality apps.",
+    "cordova": {
+        "id": "cordova-plugin-ar",
+        "platforms": [
+              "ios"
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tjwoon/csAR"
+    },
+    "keywords": [
+        "augmented",
+        "reality",
+        "augmented reality",
+        "arkit",
+        "ar",
+        "ecosystem:cordova",
+        "cordova-ios"
+    ],
+    "author": "TJ Woon (tj@cloudsky.org)",
+    "license": "Apache 2.0"
+}
