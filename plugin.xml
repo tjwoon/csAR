@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="org.cloudsky.cordovaplugins.ar" version="0.1.0-alpha1">
+        id="cordova-plugin-ar" version="0.1.0-alpha1">
 
     <engines>
         <engine name="cordova" version=">=3.0.0" />
